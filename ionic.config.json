@@ -1,0 +1,7 @@
+{
+  "name": "kesflo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
