@@ -1,13 +1,70 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Tab 3 </ion-title>
+    <ion-title>
+      <p>miWallet</p>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="presentAlertConfirm()">
+        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" style="--padding-bottom: 80px">
+  <ion-list lines="none">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label>
+              <h5>Saldo Awal</h5>
+              <p>Rp {{ saldoAwal | number:'0.0-0'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label class="ion-text-right">
+              <h5>Saldo Akhir</h5>
+              <p>Rp {{ saldoAkhir | number:'0.0-0'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="history.length > 0">
+        <ion-col size="12">
+          <ion-item-divider>
+            <ion-label>History</ion-label>
+          </ion-item-divider>
+          <ion-item *ngFor="let x of history.slice().reverse() let i = index;">
+            <ion-label>
+              <h6>{{ x.nama }}</h6>
+              <p>{{ x.tgl }}</p>
+            </ion-label>
+            <ion-label class="ion-text-right"
+              ><h6>
+                {{ x.jenis === 'Pemasukan' ? '+' : '-' }} Rp {{ x.nominal |
+                number:'0.0-0'}}
+              </h6></ion-label
+            >
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button (click)="presentInput('Pemasukan')">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="presentInput('Pengeluaran')">
+    <ion-icon name="remove"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

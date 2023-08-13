@@ -1,0 +1,229 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Summary</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Summary</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid fixed class="ion-no-padding">
+    <ion-row>
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>Saldo Dapur</ion-label>
+            <ion-label class="ion-text-right"
+              >Rp {{ saldoDapur | number:'0.0-0'}}</ion-label
+            >
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Saldo Tabungan</ion-label>
+            <ion-label class="ion-text-right"
+              >Rp {{ saldoTabungan | number:'0.0-0'}}</ion-label
+            >
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Saldo Puxiboo</ion-label>
+            <ion-label class="ion-text-right"
+              >Rp {{ saldoPuxiboo | number:'0.0-0'}}</ion-label
+            >
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>Total</ion-label>
+            <ion-label class="ion-text-right"
+              ><b
+                >Rp {{ (saldoDapur + saldoTabungan + saldoPuxiboo) |
+                number:'0.0-0'}}</b
+              ></ion-label
+            >
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Total Uang Real</ion-label>
+            <ion-label class="ion-text-right"
+              ><b
+                >Rp {{
+                (BCA+BNI+DanaMomi+DanaAppa+SpayMomi+SpayAppa+Seabank+CashMomi+CashAppa+Coin)
+                | number:'0.0-0'}}</b
+              ></ion-label
+            >
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Selisih</ion-label>
+            <ion-label class="ion-text-right"
+              ><b
+                >Rp {{
+                ((BCA+BNI+DanaMomi+DanaAppa+SpayMomi+SpayAppa+Seabank+CashMomi+CashAppa+Coin)-
+                (saldoDapur + saldoTabungan + saldoPuxiboo)) |
+                number:'0.0-0'}}</b
+              ></ion-label
+            >
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="margin-top: 20px">
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>BCA</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal BCA"
+              [(ngModel)]="BCA"
+              type="tel"
+              clearInput
+              [(ngModel)]="BCADisplay"
+              (keyup)="inputValidator($event.target, 'BCA')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>BNI</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal BNI"
+              [(ngModel)]="BNI"
+              type="tel"
+              clearInput
+              [(ngModel)]="BNIDisplay"
+              (keyup)="inputValidator($event.target, 'BNI')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Dana Momi</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Dana Momi"
+              [(ngModel)]="DanaMomi"
+              type="tel"
+              clearInput
+              [(ngModel)]="DanaMomiDisplay"
+              (keyup)="inputValidator($event.target, 'DanaMomi')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Dana Appa</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Dana Appa"
+              [(ngModel)]="DanaAppa"
+              type="tel"
+              clearInput
+              [(ngModel)]="DanaAppaDisplay"
+              (keyup)="inputValidator($event.target, 'DanaAppa')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Spay Momi</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Spay Momi"
+              [(ngModel)]="SpayMomi"
+              type="tel"
+              clearInput
+              [(ngModel)]="SpayMomiDisplay"
+              (keyup)="inputValidator($event.target, 'SpayMomi')"
+            >
+            </ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>Spay Appa</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Spay Appa"
+              [(ngModel)]="SpayAppa"
+              type="tel"
+              clearInput
+              [(ngModel)]="SpayAppaDisplay"
+              (keyup)="inputValidator($event.target, 'SpayAppa')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Seabank</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Seabank"
+              [(ngModel)]="Seabank"
+              type="tel"
+              clearInput
+              [(ngModel)]="SeabankDisplay"
+              (keyup)="inputValidator($event.target, 'Seabank')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Cash Momi</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Cash Momi"
+              [(ngModel)]="CashMomi"
+              type="tel"
+              clearInput
+              [(ngModel)]="CashMomiDisplay"
+              (keyup)="inputValidator($event.target, 'CashMomi')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Cash Appa</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Cash Appa"
+              [(ngModel)]="CashAppa"
+              type="tel"
+              clearInput
+              [(ngModel)]="CashAppaDisplay"
+              (keyup)="inputValidator($event.target, 'CashAppa')"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Coin</ion-label>
+            <ion-input
+              class="ion-text-right"
+              placeholder="Nominal Coin"
+              [(ngModel)]="Coin"
+              type="tel"
+              clearInput
+              [(ngModel)]="CoinDisplay"
+              (keyup)="inputValidator($event.target, 'Coin')"
+            >
+            </ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
