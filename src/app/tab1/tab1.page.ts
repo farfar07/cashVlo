@@ -19,8 +19,29 @@ export class Tab1Page {
   ) {}
 
   ionViewWillEnter() {
-    console.log(this.router.url);
-    this.storage.get('SaldoDapur')?.then((res) => {
+    this.storage
+      .get('SaldoDapur')
+      ?.then((saldo) => {
+        if (saldo !== null) {
+          this.storage.set('Saldo' + this.router.url, saldo);
+        }
+      })
+      .then(() => {
+        this.storage.set('SaldoDapur', null);
+      });
+
+    this.storage
+      .get('CashflowDapur')
+      ?.then((saldo) => {
+        if (saldo !== null) {
+          this.storage.set('Cashflow' + this.router.url, saldo);
+        }
+      })
+      .then(() => {
+        this.storage.set('CashflowDapur', null);
+      });
+
+    this.storage.get('Saldo' + this.router.url)?.then((res) => {
       if (res !== null) {
         this.saldoAwal = res.saldoAwal;
         this.saldoAkhir = res.saldoAkhir;
@@ -31,7 +52,7 @@ export class Tab1Page {
   }
 
   ionViewDidEnter() {
-    this.storage.get('CashflowDapur')?.then((res) => {
+    this.storage.get('Cashflow' + this.router.url)?.then((res) => {
       if (res !== null) {
         this.history = res;
       }
@@ -75,19 +96,19 @@ export class Tab1Page {
               nominal: nominal,
             };
 
-            this.storage.get('SaldoDapur')?.then((res) => {
+            this.storage.get('Saldo' + this.router.url)?.then((res) => {
               if (res !== null) {
                 let saldo = parseInt(res.saldoAkhir);
 
                 if (jenis === 'Pemasukan') {
                   this.saldoAkhir = saldo + nominal;
-                  this.storage.set('SaldoDapur', {
+                  this.storage.set('Saldo' + this.router.url, {
                     saldoAwal: this.saldoAwal,
                     saldoAkhir: this.saldoAkhir,
                   });
                 } else if (jenis === 'Pengeluaran') {
                   this.saldoAkhir = saldo - nominal;
-                  this.storage.set('SaldoDapur', {
+                  this.storage.set('Saldo' + this.router.url, {
                     saldoAwal: this.saldoAwal,
                     saldoAkhir: this.saldoAkhir,
                   });
@@ -96,13 +117,13 @@ export class Tab1Page {
             });
 
             let orderTersimpan: any[] = [];
-            this.storage.get('CashflowDapur')!.then((res) => {
+            this.storage.get('Cashflow' + this.router.url)!.then((res) => {
               if (res !== null) {
                 orderTersimpan = res.concat(cashflow);
-                this.storage.set('CashflowDapur', orderTersimpan);
+                this.storage.set('Cashflow' + this.router.url, orderTersimpan);
               } else {
                 orderTersimpan.push(cashflow);
-                this.storage.set('CashflowDapur', orderTersimpan);
+                this.storage.set('Cashflow' + this.router.url, orderTersimpan);
               }
               this.history = orderTersimpan;
             });
@@ -136,7 +157,7 @@ export class Tab1Page {
           text: 'OK',
 
           handler: (ev) => {
-            this.storage.set('SaldoDapur', {
+            this.storage.set('Saldo' + this.router.url, {
               saldoAwal: ev.Jumlah,
               saldoAkhir: ev.Jumlah,
             });
@@ -162,14 +183,14 @@ export class Tab1Page {
         {
           text: 'Pindah Bulan',
           handler: () => {
-            this.storage.get('SaldoDapur')?.then((res) => {
+            this.storage.get('Saldo' + this.router.url)?.then((res) => {
               if (res !== null) {
-                this.storage.set('SaldoDapur', {
+                this.storage.set('Saldo' + this.router.url, {
                   saldoAwal: res.saldoAkhir,
                   saldoAkhir: res.saldoAkhir,
                 });
 
-                this.storage.remove('CashflowDapur');
+                this.storage.remove('Cashflow' + this.router.url);
                 this.saldoAwal = res.saldoAkhir;
                 this.saldoAkhir = res.saldoAkhir;
                 this.history = [];
@@ -180,8 +201,8 @@ export class Tab1Page {
         {
           text: 'Reset Semua',
           handler: () => {
-            this.storage.remove('CashflowDapur');
-            this.storage.remove('SaldoDapur');
+            this.storage.remove('Cashflow' + this.router.url);
+            this.storage.remove('Saldo' + this.router.url);
             this.saldoAwal = 0;
             this.saldoAkhir = 0;
 
@@ -223,15 +244,15 @@ export class Tab1Page {
     }
 
     this.storage
-      .set('SaldoDapur', {
+      .set('Saldo' + this.router.url, {
         saldoAwal: this.saldoAwal,
         saldoAkhir: this.saldoAkhir,
       })
       ?.then(() => {
         let index = this.history.findIndex((x) => x === Trx);
-        this.storage.get('CashflowDapur')!.then((res) => {
+        this.storage.get('Cashflow' + this.router.url)!.then((res) => {
           res.splice(index, 1);
-          this.storage.set('CashflowDapur', res);
+          this.storage.set('Cashflow' + this.router.url, res);
           this.history = res;
         });
       });

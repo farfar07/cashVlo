@@ -43,19 +43,19 @@ export class SummaryPage implements OnInit {
   ngOnInit() {}
 
   ionViewDidEnter() {
-    this.storage.get('SaldoDapur')?.then((res) => {
+    this.storage.get('Saldo/tabs/tab1')?.then((res) => {
       if (res !== null) {
         this.saldoDapur = parseInt(res.saldoAkhir);
       }
     });
 
-    this.storage.get('SaldoTabungan')?.then((res) => {
+    this.storage.get('Saldo/tabs/tab2')?.then((res) => {
       if (res !== null) {
         this.saldoTabungan = parseInt(res.saldoAkhir);
       }
     });
 
-    this.storage.get('SaldoPuxiboo')?.then((res) => {
+    this.storage.get('Saldo/tabs/tab3')?.then((res) => {
       if (res !== null) {
         this.saldoPuxiboo = parseInt(res.saldoAkhir);
       }

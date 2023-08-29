@@ -44,12 +44,12 @@
               <h6>{{ x.nama }}</h6>
               <p>{{ x.tgl }}</p>
             </ion-label>
-            <ion-label class="ion-text-right"
-              ><h6>
+            <ion-label class="ion-text-right" (click)="presentAlertHapusTrx(x)">
+              <h6>
                 {{ x.jenis === 'Pemasukan' ? '+' : '-' }} Rp {{ x.nominal |
                 number:'0.0-0'}}
-              </h6></ion-label
-            >
+              </h6>
+            </ion-label>
           </ion-item>
         </ion-col>
       </ion-row>
