@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Directive } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { StorageService } from '../services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -13,10 +14,12 @@ export class Tab1Page {
   history: any[] = [];
   constructor(
     private alertController: AlertController,
-    private storage: StorageService
+    private storage: StorageService,
+    private router: Router
   ) {}
 
   ionViewWillEnter() {
+    console.log(this.router.url);
     this.storage.get('SaldoDapur')?.then((res) => {
       if (res !== null) {
         this.saldoAwal = res.saldoAwal;
@@ -31,7 +34,6 @@ export class Tab1Page {
     this.storage.get('CashflowDapur')?.then((res) => {
       if (res !== null) {
         this.history = res;
-        console.log(this.history);
       }
     });
   }
@@ -109,9 +111,7 @@ export class Tab1Page {
       ],
     });
 
-    await alert.present().then(() => {
-      document.getElementById('Nama')!.setAttribute('maxlength', '15');
-    });
+    await alert.present();
   }
 
   async presentSaldo() {
@@ -194,5 +194,46 @@ export class Tab1Page {
     });
 
     await alert.present();
+  }
+
+  async presentAlertHapusTrx(Trx: any) {
+    const alert = await this.alertController.create({
+      message: 'Hapus Transaksi ' + Trx.nama + '?',
+      buttons: [
+        {
+          text: 'G',
+          role: 'cancel',
+        },
+        {
+          text: 'Y',
+          handler: () => {
+            this.hapusTrx(Trx);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+  hapusTrx(Trx: any) {
+    if (Trx.jenis === 'Pemasukan') {
+      this.saldoAkhir = this.saldoAkhir - Trx.nominal;
+    } else {
+      this.saldoAkhir = this.saldoAkhir + Trx.nominal;
+    }
+
+    this.storage
+      .set('SaldoDapur', {
+        saldoAwal: this.saldoAwal,
+        saldoAkhir: this.saldoAkhir,
+      })
+      ?.then(() => {
+        let index = this.history.findIndex((x) => x === Trx);
+        this.storage.get('CashflowDapur')!.then((res) => {
+          res.splice(index, 1);
+          this.storage.set('CashflowDapur', res);
+          this.history = res;
+        });
+      });
   }
 }

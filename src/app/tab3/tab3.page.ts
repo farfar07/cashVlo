@@ -109,9 +109,7 @@ export class Tab3Page {
       ],
     });
 
-    await alert.present().then(() => {
-      document.getElementById('Nama')!.setAttribute('maxlength', '15');
-    });
+    await alert.present();
   }
 
   async presentSaldo() {
