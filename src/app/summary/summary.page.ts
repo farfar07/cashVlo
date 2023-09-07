@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../services/storage.service';
+import { Clipboard } from '@capacitor/clipboard';
 
 @Component({
   selector: 'app-summary',
@@ -220,5 +221,180 @@ export class SummaryPage implements OnInit {
           break;
       }
     }, 50);
+  }
+
+  async copy() {
+    let saldo = '';
+    if (this.saldoDapur > 0) {
+      saldo +=
+        'Saldo Dapur: Rp ' +
+        this.saldoDapur.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.saldoTabungan > 0) {
+      saldo +=
+        'Saldo Tabungan: Rp ' +
+        this.saldoTabungan.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.saldoPuxiboo > 0) {
+      saldo +=
+        'Saldo Puxiboo: Rp ' +
+        this.saldoPuxiboo.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '';
+    }
+    saldo +=
+      '\n\nTotal: Rp ' +
+      (this.saldoDapur + this.saldoTabungan + this.saldoPuxiboo).toLocaleString(
+        'id',
+        {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }
+      ) +
+      '\n\n';
+
+    if (this.BCA > 0) {
+      saldo +=
+        'BCA: Rp ' +
+        this.BCA.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.BNI > 0) {
+      saldo +=
+        'BNI: Rp ' +
+        this.BNI.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.DanaMomi > 0) {
+      saldo +=
+        'DanaMomi: Rp ' +
+        this.DanaMomi.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.DanaAppa > 0) {
+      saldo +=
+        'DanaAppa: Rp ' +
+        this.DanaAppa.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.SpayMomi > 0) {
+      saldo +=
+        'SpayMomi: Rp ' +
+        this.SpayMomi.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+
+    if (this.SpayAppa > 0) {
+      saldo +=
+        'SpayAppa: Rp ' +
+        this.SpayAppa.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.Seabank > 0) {
+      saldo +=
+        'Seabank: Rp ' +
+        this.Seabank.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.CashMomi > 0) {
+      saldo +=
+        'CashMomi: Rp ' +
+        this.CashMomi.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.CashAppa > 0) {
+      saldo +=
+        'CashAppa: Rp ' +
+        this.CashAppa.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+    if (this.Coin > 0) {
+      saldo +=
+        'Coin: Rp ' +
+        this.Coin.toLocaleString('id', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }) +
+        '\n';
+    }
+
+    saldo +=
+      '\n\nTotal Uang Real: Rp ' +
+      (
+        this.BCA +
+        this.BNI +
+        this.DanaMomi +
+        this.DanaAppa +
+        this.SpayMomi +
+        this.SpayAppa +
+        this.Seabank +
+        this.CashMomi +
+        this.CashAppa +
+        this.Coin
+      ).toLocaleString('id', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }) +
+      '\n\n';
+
+    saldo +=
+      'Selisih: Rp ' +
+      (
+        this.BCA +
+        this.BNI +
+        this.DanaMomi +
+        this.DanaAppa +
+        this.SpayMomi +
+        this.SpayAppa +
+        this.Seabank +
+        this.CashMomi +
+        this.CashAppa +
+        this.Coin -
+        (this.saldoDapur + this.saldoTabungan + this.saldoPuxiboo)
+      ).toLocaleString('id', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }) +
+      '\n\n';
+    await Clipboard.write({
+      string: saldo,
+    });
   }
 }
