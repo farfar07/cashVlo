@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../services/storage.service';
 import { Clipboard } from '@capacitor/clipboard';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-summary',
@@ -39,7 +40,10 @@ export class SummaryPage implements OnInit {
   CoinDisplay: string = '';
 
   SelisihDisplay: string = '';
-  constructor(private storage: StorageService) {}
+  constructor(
+    private storage: StorageService,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {}
 
@@ -356,7 +360,7 @@ export class SummaryPage implements OnInit {
     }
 
     saldo +=
-      '\n\nTotal Uang Real: Rp ' +
+      '\nTotal Uang Real: Rp ' +
       (
         this.BCA +
         this.BNI +
@@ -396,5 +400,15 @@ export class SummaryPage implements OnInit {
     await Clipboard.write({
       string: saldo,
     });
+    this.presentToast();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Saldo copied.',
+      duration: 2000,
+      color: 'success',
+    });
+    toast.present();
   }
 }
