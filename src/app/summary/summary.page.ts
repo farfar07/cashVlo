@@ -43,9 +43,26 @@ export class SummaryPage implements OnInit {
   constructor(
     private storage: StorageService,
     private toastController: ToastController
-  ) {}
+  ) {
+    setInterval(() => {
+      this.autoSave();
+    }, 500);
+  }
 
   ngOnInit() {}
+
+  autoSave() {
+    this.storage.set('BCA', this.BCA);
+    this.storage.set('BNI', this.BNI);
+    this.storage.set('DanaMomi', this.DanaMomi);
+    this.storage.set('DanaAppa', this.DanaAppa);
+    this.storage.set('SpayMomi', this.SpayMomi);
+    this.storage.set('SpayAppa', this.SpayAppa);
+    this.storage.set('Seabank', this.Seabank);
+    this.storage.set('CashMomi', this.CashMomi);
+    this.storage.set('CashAppa', this.CashAppa);
+    this.storage.set('Coin', this.Coin);
+  }
 
   ionViewDidEnter() {
     this.storage.get('Saldo/tabs/tab1')?.then((res) => {
@@ -229,33 +246,28 @@ export class SummaryPage implements OnInit {
 
   async copy() {
     let saldo = '';
-    if (this.saldoDapur > 0) {
-      saldo +=
-        'Saldo Dapur: Rp ' +
-        this.saldoDapur.toLocaleString('id', {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        }) +
-        '\n';
-    }
-    if (this.saldoTabungan > 0) {
-      saldo +=
-        'Saldo Tabungan: Rp ' +
-        this.saldoTabungan.toLocaleString('id', {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        }) +
-        '\n';
-    }
-    if (this.saldoPuxiboo > 0) {
-      saldo +=
-        'Saldo Puxiboo: Rp ' +
-        this.saldoPuxiboo.toLocaleString('id', {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        }) +
-        '';
-    }
+    saldo +=
+      'Saldo Dapur: Rp ' +
+      this.saldoDapur.toLocaleString('id', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }) +
+      '\n';
+    saldo +=
+      'Saldo Tabungan: Rp ' +
+      this.saldoTabungan.toLocaleString('id', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }) +
+      '\n';
+    saldo +=
+      'Saldo Puxiboo: Rp ' +
+      this.saldoPuxiboo.toLocaleString('id', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }) +
+      '';
+
     saldo +=
       '\n\nTotal: Rp ' +
       (this.saldoDapur + this.saldoTabungan + this.saldoPuxiboo).toLocaleString(
